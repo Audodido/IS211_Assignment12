@@ -20,6 +20,7 @@
             <th>ID</th>
             <th>First Name</th>
             <th>Last Name </th>
+            <th>Link to student's history</th>
         </tr>
 
         <tr>
@@ -28,6 +29,7 @@
             <td>{{ students[s][0] }}</td>
             <td>{{ students[s][1] }}</td>
             <td>{{ students[s][2] }}</td>
+            <td><a href="/student/{{students[s][0]}}">see previous grades</a></td>
         </tr>
             {% endfor %}
 

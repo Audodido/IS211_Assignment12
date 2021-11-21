@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>STUDENT RESULTS</title>
+<body>
+    {% if error != None %}
+
+    <h1 align="center">{{ error }}</h1>
+    <p align="center"><a href="/dashboard">back</a></p>
+
+    {% else %}
+
+    <h1 align="center">{{ results[0][0] }}</h1>
+
+    <table class="center" border="1" align="center">
+
+        <tr>
+            <th>QUIZ ID</th>
+            <th>SCORE</th>
+        </tr>
+        <tr>
+            {% for r in results %}
+            <td>{{ r[1] }}</td>
+            <td>{{ r[2] }}</td>
+        </tr>
+
+        {% endfor %}
+    </table>
+    <p align="center"><a href="/dashboard">back</a></p>
+
+    {% endif %}
+
+
+</body>

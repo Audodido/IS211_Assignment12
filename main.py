@@ -10,8 +10,6 @@ check_username = 'admin'
 check_password = 'password'
 app.secret_key = '\xbb\xcc\xdbS-\xcb\x99\xc3\xf5\xe7&\x87\xcc\xef\x98\x86\x80[\xcd\xad\x05\xf6\xfd\xd2'
 
-
-
 students = {
     1 : ['John', 'Smith'],
     2 : ['Connor', 'Hanwick'],
@@ -24,9 +22,10 @@ quizzes = {
 }
 
 quiz_results = {
-    1: [1, 1, 85]
+    1 : [1, 1, 85],
+    2 : [1, 2, 92],
+    3 : [3, 1, 99]
 }
-
 
 #clear tables each time program is run - might remove
 for i in ('students','quizzes','quiz_results'):
@@ -145,6 +144,30 @@ def add_quiz():
     else: 
         error = 'You must log in to continue'
         return render_template('login.html', error=error)
+
+
+@app.route('/student/<id>')
+def student_results(id):
+    conn = sqlite3.connect('hw13.db') #connect to the database in same thread/method !!change to g.db!!
+    cur = conn.cursor() 
+    error = None
+    if session['logged_in'] == True:
+        cur.execute('''SELECT 
+                        s.first_name || " " || s.last_name as NAME,
+                        qr.rowid,
+                        qr.score
+                        FROM quiz_results qr
+                        JOIN students s
+                        ON qr.student_id = s.rowid
+                        WHERE qr.student_id == ?''', id)
+        student_results = cur.fetchall()
+        if len(student_results) != 0:
+            return render_template('student_results.html', results=student_results, error=error)
+        else:
+            error = 'no results for student'
+            print(error)
+            return render_template('student_results.html', results=student_results, error=error)
+
 
 
 
