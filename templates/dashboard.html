@@ -11,9 +11,10 @@
     <h1 align='center'>DASHBOARD</h1>
 
 
-    <p><a href="/student/add">add student</a></p>
-    <p><a href="/quiz/add">add quiz</a></p>
-    
+    <p align='center'><a href="/student/add">add student</a></p>
+    <p align='center'><a href="/quiz/add">add quiz</a></p>
+    <p align='center'><a href="/results/add">add quiz result</a></p>
+
     <table class="center" border="1" align="left">
         <!-- STUDENTS TABLE  -->
         <tr>
@@ -30,6 +31,7 @@
             <td>{{ students[s][1] }}</td>
             <td>{{ students[s][2] }}</td>
             <td><a href="/student/{{students[s][0]}}">see previous grades</a></td>
+
         </tr>
             {% endfor %}
 

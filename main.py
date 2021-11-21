@@ -1,4 +1,4 @@
-from flask import Flask, session, redirect, url_for, request, render_template, current_app, g
+from flask import Flask, session, redirect, url_for, request, render_template, current_app, g, flash
 import sqlite3
 
 app = Flask(__name__)
@@ -168,31 +168,35 @@ def student_results(id):
             print(error)
             return render_template('student_results.html', results=student_results, error=error)
 
-
+@app.route('/results/add', methods=['GET', 'POST'])
+def add_results(error=None):
+    conn = sqlite3.connect('hw13.db') #connect to the database in same thread/method !!change to g.db!!
+    cur = conn.cursor() 
+    if session['logged_in'] == True:
+        try:
+            if request.method == 'GET':
+                cur.execute('''SELECT rowid,
+                                first_name || " " || last_name
+                                FROM students''')
+                students = cur.fetchall()
+                cur.execute('''SELECT rowid,
+                                subject_
+                                FROM quizzes''')
+                quizzes = cur.fetchall()
+                print(students)
+                return render_template('add_result.html', students=students, quizzes=quizzes)
+            elif request.method == 'POST':
+                student = request.form['student']
+                quiz = request.form['quiz']
+                grade = request.form['grade']
+                cur.execute('INSERT INTO quiz_results VALUES (?,?,?)', (student, quiz, grade))
+                conn.commit()
+                return redirect('/dashboard')
+        except:
+            flash("An error occurred. Please try again.")
+            return redirect('/results/add')
 
 
 if __name__ == '__main__':
 
     app.run(debug=True)    
-
-
-
-
-
-
-
-    # # print(quiz_results(1, 85))
-    # results = []
-    # cur.execute('''SELECT * FROM students''')
-    # results.append(cur.fetchall())
-    # cur.execute('''SELECT * FROM quizzes''')
-    # results.append(cur.fetchall())
-    # cur.execute('''SELECT qr.score,
-    #             s.first_name
-    #             FROM quiz_results qr
-    #             JOIN students s
-    #             ON qr.student_id = s.id''')
-    # results.append(cur.fetchall())
-    
-    # for r in results:
-    #     print(r)
