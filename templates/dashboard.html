@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+
+</head>
+<body>
+    <h1 align='center'>DASHBOARD</h1>
+
+
+    <p><a href="/student/add">add student</a></p>
+    
+    <table class="center" border="1" align="left">
+        <!-- STUDENTS TABLE  -->
+        <tr>
+            <th>ID</th>
+            <th>Fist Name</th>
+            <th>Last Name </th>
+        </tr>
+
+        <tr>
+            {% for s in range(students|length) %}
+
+            <td>{{ students[s][0] }}</td>
+            <td>{{ students[s][1] }}</td>
+            <td>{{ students[s][2] }}</td>
+        </tr>
+            {% endfor %}
+
+    </table>
+    
+
+    <!-- QUIZZES TABLE  -->
+    <table class="center" border="1" align="center">
+
+        <tr>
+            <th>ID</th>
+            <th>Subject</th>
+            <th># of Questions </th>
+            <th>Quiz Date </th>
+        </tr>
+
+        <tr>
+            {% for q in range(quizzes|length) %}
+
+            <td>{{ quizzes[q][0] }}</td>
+            <td>{{ quizzes[q][1] }}</td>
+            <td>{{ quizzes[q][2] }}</td>
+            <td>{{ quizzes[q][3] }}</td>
+        </tr>
+            {% endfor %}
+    </table>
+
+
+    <!-- <a href="/student/add"><span style="text-align:left">Add Student</span></a> -->
+
+
+
+</body>
+</html>
+
+

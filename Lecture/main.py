@@ -1,9 +1,21 @@
-from flask import Flask, session, redirect, url_for, request, render_template, g
+from flask import Flask, session, redirect, url_for, request, render_template, current_app, g
 import re
 import logging
+import sqlite3
 from logging import FileHandler
 from db_build import data_distribute
 #http://opentechschool.github.io/python-flask/extras/sessions.html
+
+
+# def get_db():
+#     if 'db' not in g:
+#         g.db = sqlite3.connect(
+#             current_app.config['DATABASE'],
+#             detect_types=sqlite3.PARSE_DECLTYPES
+#         )
+#         g.db.row_factory = sqlite3.Row
+
+#     return g.db
 
 
 app = Flask(__name__)
