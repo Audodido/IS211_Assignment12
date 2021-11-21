@@ -52,14 +52,13 @@ cur.execute('''CREATE TABLE IF NOT EXISTS quiz_results (
 def populate_table(dict, table):
     #add student data to table 
     for k, v in dict.items():
-        # v.insert(0, k)
         if table == 'students':
             cur.execute(f'INSERT INTO {table} VALUES (?,?)', (v))
         else: 
             cur.execute(f'INSERT INTO {table} VALUES (?,?,?)', (v))
     conn.commit()
 
-#populate tables 
+# #populate tables 
 populate_table(students, 'students')
 populate_table(quizzes, 'quizzes')
 populate_table(quiz_results, 'quiz_results')
@@ -99,25 +98,32 @@ def dashboard():
         cur.execute('''SELECT rowid, subject_, number_of_questions, date_given FROM quizzes''')
         quizzes = cur.fetchall()
         return render_template('dashboard.html', students=students, quizzes=quizzes)
-    else: 
-        error = 'You must log in to continue'
-        render_template('login.html', error=error)
+
 
 
 @app.route('/student/add', methods=['GET', 'POST'])
 def add_student():
+    error=None
+    conn = sqlite3.connect('hw13.db') #connect to the database in same thread/method !!change to g.db!!
+    cur = conn.cursor() 
     if session['logged_in'] == True:
         if request.method == 'GET':
             return render_template('studentadd.html')
         elif request.method == 'POST':
             first = request.form['first_name'] 
             last = request.form['last_name']
-            print(first, last)
+            cur.execute('INSERT INTO students VALUES (?,?)', (first, last))
+            conn.commit()
+            print(first,last, 'added to \'students\' table')
             return redirect('/dashboard')
-
+        else:
+            error = "An error occurred adding this student. Try again."
+            return render_template('studentadd.html', error=error)
     else: 
         error = 'You must log in to continue'
         return render_template('login.html', error=error)
+
+
 
 
 

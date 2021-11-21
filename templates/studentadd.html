@@ -7,6 +7,11 @@
     <title>Add a Student</title>
 
 
+    {% if error != None %}
+    <h2> {{ error }} </h2>
+    {% endif %}
+
+    
     <form action="/student/add" method="post">
         <p>First Name</p> 
         <input type="text" name="first_name"></input>
