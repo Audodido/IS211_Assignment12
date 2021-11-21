@@ -19,7 +19,7 @@ students = {
 }
 
 quizzes = {
-    1 : ['Python Basics', 5, 'February, 5th, 2015'],
+    1 : ['Python Basics', 5, 'February, 5, 2015'],
     2 : ['Web App Development', 15, 'March, 10, 2015']
 }
 
@@ -114,7 +114,7 @@ def add_student():
             last = request.form['last_name']
             cur.execute('INSERT INTO students VALUES (?,?)', (first, last))
             conn.commit()
-            print(first,last, 'added to \'students\' table')
+            # print(first,last, 'added to \'students\' table')
             return redirect('/dashboard')
         else:
             error = "An error occurred adding this student. Try again."
@@ -124,7 +124,27 @@ def add_student():
         return render_template('login.html', error=error)
 
 
-
+@app.route('/quiz/add', methods=['GET', 'POST'])
+def add_quiz():
+    error=None
+    conn = sqlite3.connect('hw13.db') #connect to the database in same thread/method !!change to g.db!!
+    cur = conn.cursor() 
+    if session['logged_in'] == True:
+        if request.method == 'GET':
+            return render_template('quizadd.html')
+        elif request.method == 'POST':
+            subject = request.form['subject']
+            qnum = request.form['qnum']
+            date = f"{request.form['month_day']}, {request.form['year']}"
+            cur.execute('INSERT INTO quizzes VALUES (?,?,?)', (subject, qnum, date))
+            conn.commit()
+            return redirect('/dashboard')
+        else:
+            error = "An error occurred adding this quiz. Try again."
+            return render_template('quizadd.html', error=error)
+    else: 
+        error = 'You must log in to continue'
+        return render_template('login.html', error=error)
 
 
 
